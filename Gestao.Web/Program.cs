@@ -1,7 +1,11 @@
+using Gestao.Web.Servico.Interface;
+using Gestao.Web.Servico;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ILancamentoService, LancamentoService>();
 
 var app = builder.Build();
 
@@ -17,6 +21,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.UseAuthorization();
 

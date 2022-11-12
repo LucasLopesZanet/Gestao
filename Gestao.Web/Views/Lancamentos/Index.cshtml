@@ -1,28 +1,47 @@
-﻿@{
-    ViewData["Title"] = "Lista de lançamentos";
+﻿@model IEnumerable<Gestao.Web.Models.Lancamento>
+
+@{
+    ViewData["Title"] = "Index";
 }
-<h1>@ViewData["Title"]</h1>
-<input />
-@Html.TextBox("valor")
-@Html.ActionLink( "Buscar", "","Lancamentos", new
-        {
-        valor = item,
-        }, null)
 
-<ul>
-    @{
-        foreach (Lancamento item in ViewBag.Lancamentos)
-        {
-            <li>
-                <p>
-                    <b>Descricao:</b>  @item.Descricao
-                <span>
-                        <b>Valor:</b>  @item.Valor
-                </span>
-                </p>
-            </li>
-        }
-    }
-    
-</ul>
+<h1>Index</h1>
 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id = item.Id  }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id  }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id   })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

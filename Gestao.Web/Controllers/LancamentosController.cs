@@ -1,4 +1,6 @@
-﻿using Gestao.Web.Servico;
+﻿using Gestao.Web.Models;
+using Gestao.Web.Servico;
+using Gestao.Web.Servico.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,28 +8,33 @@ namespace Gestao.Web.Controllers
 {
     public class LancamentosController : Controller
     {
+        private ILancamentoService _lancamentosService ;
+        public LancamentosController(ILancamentoService lancamentosService)
+        {
+            _lancamentosService = lancamentosService;
+        }
+
 
         // GET: LancamentoController
         [HttpGet, Route("index")]
         public ActionResult Index()
         {
-            LancamentoService _lancamentosService = new LancamentoService();
             ViewBag.Lancamentos = _lancamentosService.BuscarTodosLancamentos();
 
-            return View();
+            return View(_lancamentosService.BuscarTodosLancamentos());
         }
         public ActionResult Index(long valor)
         {
-            LancamentoService _lancamentosService = new LancamentoService();
             ViewBag.Lancamentos = _lancamentosService.BuscarPorValor(valor);
 
             return View();
         }
 
         // GET: LancamentoController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(long id)
         {
-            return View();
+            Lancamento lancamento = _lancamentosService.BuscarPorId(id);
+            return View(lancamento);
         }
 
         // GET: LancamentoController/Create
@@ -39,10 +46,11 @@ namespace Gestao.Web.Controllers
         // POST: LancamentoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
+        public ActionResult Create(Lancamento lancamento)
+        {            
             try
             {
+                _lancamentosService.AdicionaLancamento(lancamento);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -52,18 +60,20 @@ namespace Gestao.Web.Controllers
         }
 
         // GET: LancamentoController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(long id)
         {
-            return View();
+            Lancamento lancamento = _lancamentosService.BuscarPorId(id);
+            return View(lancamento);
         }
 
         // POST: LancamentoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Lancamento lancamento)
         {
             try
             {
+                _lancamentosService.Editar(lancamento);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -75,7 +85,8 @@ namespace Gestao.Web.Controllers
         // GET: LancamentoController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Lancamento lancamento = _lancamentosService.BuscarPorId(id);
+            return View(lancamento);
         }
 
         // POST: LancamentoController/Delete/5
@@ -85,6 +96,7 @@ namespace Gestao.Web.Controllers
         {
             try
             {
+                _lancamentosService.Excluir(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Lista de lançamentos";
+}
+<h1>@ViewData["Title"]</h1>
+<input />
+@Html.TextBox("valor")
+@Html.ActionLink( "Buscar", "","Lancamentos", new
+        {
+        valor = "",
+        }, null)
+
+<ul>
+    @{
+        foreach (Lancamento item in ViewBag.Lancamentos)
+        {
+            <li>
+                <p>
+                    <b>Descricao:</b>  @item.Descricao
+                <span>
+                        <b>Valor:</b>  @item.Valor
+                </span>
+                </p>
+            </li>
+        }
+    }
+    
+</ul>
+
